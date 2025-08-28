@@ -20,7 +20,6 @@ struct GreetingsView: View {
         static let quizButtonTitle = "TAKE A QUIZ"
     }
     
-    
     var body: some View {
         ZStack {
             Image(.threeWoman)
