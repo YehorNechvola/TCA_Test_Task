@@ -13,17 +13,20 @@ struct Quiz {
     let userColorPreferences: [ColorPreferencesEntity]
 }
 
-struct UserInterestsEntity {
+struct UserInterestsEntity: Identifiable {
     let name: String
     let description: String
+    let id: String
 }
 
-struct StylePreferencesEntity {
+struct StylePreferencesEntity: Identifiable {
     let name: String
     let imageUrl: String
+    let id: String
 }
 
-struct ColorPreferencesEntity {
+struct ColorPreferencesEntity: Identifiable {
     let name: String
     let hex: String
+    let id: String 
 }
