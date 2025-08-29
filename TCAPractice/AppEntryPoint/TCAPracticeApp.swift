@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 @main
 struct TCAPracticeApp: App {
     var body: some Scene {
         WindowGroup {
-            GreetingsView()
+            GreetingsView(store: Store(initialState: GreetingsScreenStore.State(),
+                                       reducer: { GreetingsScreenStore() }
+                                      )
+            )
         }
     }
 }

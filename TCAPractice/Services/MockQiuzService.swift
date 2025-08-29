@@ -8,13 +8,13 @@
 import Foundation
 
 protocol QuizServiceProtocol {
-    func getUserQuiz() -> Quiz
+    func getUserQuiz() async -> Quiz?
 }
 
 final class MockQuizService: QuizServiceProtocol {
     
     //MARK: - Protocol Methods
-    func getUserQuiz() -> Quiz {
+    func getUserQuiz() async -> Quiz? {
         let userInterests: [UserInterestsEntity] = [
             .init(name: "Reinvent wardrobe",
                   description: "to discover fresh outfit ideas",

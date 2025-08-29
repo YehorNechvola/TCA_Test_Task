@@ -7,25 +7,25 @@
 
 import Foundation
 
-struct Quiz {
+struct Quiz: Equatable {
     let userInterests: [UserInterestsEntity]
     let userStylePreferences: [StylePreferencesEntity]
     let userColorPreferences: [ColorPreferencesEntity]
 }
 
-struct UserInterestsEntity: Identifiable {
+struct UserInterestsEntity: Equatable, Identifiable {
     let name: String
     let description: String
     let id: String
 }
 
-struct StylePreferencesEntity: Identifiable {
+struct StylePreferencesEntity: Equatable, Identifiable {
     let name: String
     let imageUrl: String
     let id: String
 }
 
-struct ColorPreferencesEntity: Identifiable {
+struct ColorPreferencesEntity: Equatable, Identifiable {
     let name: String
     let hex: String
     let id: String 
