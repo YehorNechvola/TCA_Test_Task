@@ -12,8 +12,8 @@ struct InterestsQuizStore: Reducer {
     
     @ObservableState
     struct State: Equatable {
-        let interests: [UserInterestsEntity]
-        var seletedInterestsIds: Set<String> = []
+        let question:  Question
+        var seletedInterestsIds: Set<String>
     }
     
     enum Action: Equatable {
@@ -22,13 +22,19 @@ struct InterestsQuizStore: Reducer {
         case continueQuiz
     }
     
+    private let userDefaultsManeger = UserDefaultsManager.shared
+    
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .selectInterest(let id):
+            userDefaultsManeger.addId(id)
             state.seletedInterestsIds.insert(id)
+            print(userDefaultsManeger.getIds().count)
             return .none
         case .deselectInterest(let id):
+            userDefaultsManeger.removeId(id)
             state.seletedInterestsIds.remove(id)
+            print(userDefaultsManeger.getIds().count)
             return .none
         case .continueQuiz:
             return .none

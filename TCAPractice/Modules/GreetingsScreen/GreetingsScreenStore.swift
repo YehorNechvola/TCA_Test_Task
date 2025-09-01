@@ -13,18 +13,21 @@ struct GreetingsScreenStore {
     
     @ObservableState
     struct State {
-        var quiz: Quiz?
+        var qestions: [Question]?
         var stack = StackState<Path.State>()
+        var savedAnswersIds: Set<String> = []
     }
     
     enum Action {
         case loadQuiz
-        case quizLoaded(Quiz?)
+        case quizLoaded([Question]?)
         case takeQuizTapped
+        case getSavedUserAnswersIds
         case stack(StackActionOf<Path>)
     }
     
     private let quizService: QuizServiceProtocol = MockQuizService()
+    private let userDefaultsManager = UserDefaultsManager.shared
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
@@ -34,17 +37,24 @@ struct GreetingsScreenStore {
                     let quiz = await quizService.getUserQuiz()
                     await send(.quizLoaded(quiz))
                 }
-            case .quizLoaded(let quiz):
-                state.quiz = quiz
+            case .quizLoaded(let qestions):
+                state.qestions = qestions
                 return .none
                 
             case .takeQuizTapped:
-                state.stack.append(.userInterestsScreen(InterestsQuizStore.State(interests: state.quiz?.userInterests ?? [])))
+                guard let question = state.qestions?.first else {
+                    return .none
+                }
+                state.stack.append(.userInterestsScreen(InterestsQuizStore.State(question: question,
+                                                                                 seletedInterestsIds: state.savedAnswersIds)))
                 return .none
                 
             case .stack:
                 return .none
                 
+            case .getSavedUserAnswersIds:
+                state.savedAnswersIds = userDefaultsManager.getIds()
+                return .none
             }
         }
         .forEach(\.stack, action: \.stack)

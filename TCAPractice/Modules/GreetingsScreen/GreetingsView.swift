@@ -69,7 +69,7 @@ struct GreetingsView: View {
                                 .background(Color.white)
                                 .foregroundColor(.black)
                         }
-                        .disabled(store.quiz == nil)
+                        .disabled(store.qestions?.isEmpty ?? true)
                         .contentShape(Rectangle())
                         
                         Spacer()
@@ -80,11 +80,13 @@ struct GreetingsView: View {
             } destination: {
                 switch $0.case {
                 case .userInterestsScreen(let store):
-                    QuizInterestsView(store: store)
+                    InterestsView(store: store)
+                        .navigationBarBackButtonHidden()
                 }
             }
             .onAppear {
                 store.send(.loadQuiz)
+                store.send(.getSavedUserAnswersIds)
             }
         }
     }

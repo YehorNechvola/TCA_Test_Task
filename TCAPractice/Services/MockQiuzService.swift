@@ -8,62 +8,76 @@
 import Foundation
 
 protocol QuizServiceProtocol {
-    func getUserQuiz() async -> Quiz?
+    func getUserQuiz() async -> [Question]?
 }
 
 final class MockQuizService: QuizServiceProtocol {
     
     //MARK: - Protocol Methods
-    func getUserQuiz() async -> Quiz? {
-        let userInterests: [UserInterestsEntity] = [
+    func getUserQuiz() async -> [Question]? {
+        let userInterestsAnswers: [Answer] = [
             .init(name: "Reinvent wardrobe",
-                  description: "to discover fresh outfit ideas",
-                  id: UUID().uuidString),
+                  id: "1",
+                  description: "to discover fresh outfit ideas"),
             .init(name: "Define color palette",
-                  description: "to enhance my natural features",
-                  id: UUID().uuidString),
+                  id: "2",
+                  description: "to enhance my natural features")
+                  ,
             .init(name: "Create a seasonal capsule",
-                  description: "to curate effortless and elegant looks",
-                  id: UUID().uuidString),
+                  id: "3",
+                  description: "to curate effortless and elegant looks"),
             .init(name: "Define my style",
-                  description: "to discover my signature look",
-                  id: UUID().uuidString),
+                  id: "4",
+                  description: "to discover my signature look"),
             .init(name: "Create an outfit for an event",
-                  description: "to own a spotlight wherever you go",
-                  id: UUID().uuidString)
+                  id: "5",
+                  description: "to own a spotlight wherever you go"),
         ]
         
-        let userStylePreferences: [StylePreferencesEntity] = [
-            .init(name: "casual", imageUrl: "casual", id: UUID().uuidString),
-            .init(name: "boho", imageUrl: "boho", id: UUID().uuidString),
-            .init(name: "classy", imageUrl: "classy", id: UUID().uuidString),
-            .init(name: "ladylike", imageUrl: "ladylike", id: UUID().uuidString),
-            .init(name: "urban", imageUrl: "urban", id: UUID().uuidString),
-            .init(name: "sporty", imageUrl: "sporty", id: UUID().uuidString)
+        let userStylePreferences: [Answer] = [
+            .init(name: "casual", id: "6", imageUrl: "casual"),
+            .init(name: "boho", id: "7", imageUrl: "boho"),
+            .init(name: "classy", id: "8", imageUrl: "classy"),
+            .init(name: "ladylike", id: "9", imageUrl: "ladylike"),
+            .init(name: "urban", id: "10", imageUrl: "urban"),
+            .init(name: "sporty", id: "11", imageUrl: "sporty")
         ]
         
-        let userLolorPreferences: [ColorPreferencesEntity] = [
-            .init(name: "Light blue", hex: "#ABE2FF", id: UUID().uuidString),
-            .init(name: "Blue", hex: "#5EA8FF", id: UUID().uuidString),
-            .init(name: "Indigo", hex: "#2237A8", id: UUID().uuidString),
-            .init(name: "Turquoise", hex: "#69D1ED", id: UUID().uuidString),
-            .init(name: "Mint", hex: "#87DBC8", id: UUID().uuidString),
-            .init(name: "Olive", hex: "#A8AD49", id: UUID().uuidString),
-            .init(name: "Green", hex: "#29AD3E", id: UUID().uuidString),
-            .init(name: "Emerald", hex: "#098052", id: UUID().uuidString),
-            .init(name: "Yellow", hex: "#EDDD47", id: UUID().uuidString),
-            .init(name: "Beige", hex: "#CA9675", id: UUID().uuidString),
-            .init(name: "Orange", hex: "#CD6A09", id: UUID().uuidString),
-            .init(name: "Brown", hex: "#7F4B03", id: UUID().uuidString),
-            .init(name: "Pink", hex: "#FF86B8", id: UUID().uuidString),
-            .init(name: "Magenta", hex: "#CF236E", id: UUID().uuidString),
-            .init(name: "Red", hex: "#D31E1E", id: UUID().uuidString)
+        let userLolorPreferences: [Answer] = [
+            .init(name: "Light blue", id: "12", colorHex: "#ABE2FF"),
+            .init(name: "Blue", id: "13", colorHex: "#5EA8FF"),
+            .init(name: "Indigo", id: "14", colorHex: "#2237A8"),
+            .init(name: "Turquoise", id: "15", colorHex: "#69D1ED"),
+            .init(name: "Mint", id: "16", colorHex: "#87DBC8"),
+            .init(name: "Olive", id: "17", colorHex: "#A8AD49"),
+            .init(name: "Green", id: "18", colorHex: "#29AD3E"),
+            .init(name: "Emerald", id: "19", colorHex: "#098052"),
+            .init(name: "Yellow", id: "20", colorHex: "#EDDD47"),
+            .init(name: "Beige", id: "21", colorHex: "#CA9675"),
+            .init(name: "Orange", id: "22", colorHex: "#CD6A09"),
+            .init(name: "Brown", id: "23", colorHex: "#7F4B03"),
+            .init(name: "Pink", id: "24", colorHex: "#FF86B8"),
+            .init(name: "Magenta", id: "25", colorHex: "#CF236E"),
+            .init(name: "Red", id: "26", colorHex: "#D31E1E")
         ]
         
-        let userQuiz = Quiz(userInterests: userInterests,
-                            userStylePreferences: userStylePreferences,
-                            userColorPreferences: userLolorPreferences)
+        let questions: [Question] = [
+            .init(title: "Lifestyle & Interests",
+                  question: "What’d you like our stylists to focus on?",
+                  type: .interests,
+                  answers: userInterestsAnswers),
+            .init(title: "Lifestyle & Interests",
+                  question: "What’d you like our stylists to focus on?",
+                  type: .styles,
+                  answers: userStylePreferences),
+            .init(title: "Style preferences",
+                  question: "Choose favourite colors",
+                  type: .colors,
+                  answers: userLolorPreferences)
+        ]
         
-        return userQuiz
+        
+        
+        return questions
     }
 }

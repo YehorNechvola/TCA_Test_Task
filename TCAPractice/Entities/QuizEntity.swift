@@ -7,26 +7,33 @@
 
 import Foundation
 
-struct Quiz: Equatable {
-    let userInterests: [UserInterestsEntity]
-    let userStylePreferences: [StylePreferencesEntity]
-    let userColorPreferences: [ColorPreferencesEntity]
+struct Question: Equatable {
+    
+    enum QuestionType {
+        case interests
+        case styles
+        case colors
+    }
+    
+    let title: String
+    let question: String
+    let type: QuestionType
+    let answers: [Answer]
 }
 
-struct UserInterestsEntity: Equatable, Identifiable {
+struct Answer: Equatable {
+    
     let name: String
-    let description: String
     let id: String
-}
-
-struct StylePreferencesEntity: Equatable, Identifiable {
-    let name: String
-    let imageUrl: String
-    let id: String
-}
-
-struct ColorPreferencesEntity: Equatable, Identifiable {
-    let name: String
-    let hex: String
-    let id: String 
+    let description: String?
+    let imageUrl: String?
+    let colorHex: String?
+    
+    init(name: String, id: String, description: String? = nil, imageUrl: String? = nil, colorHex: String? = nil) {
+        self.name = name
+        self.id = id
+        self.description = description
+        self.imageUrl = imageUrl
+        self.colorHex = colorHex
+    }
 }
