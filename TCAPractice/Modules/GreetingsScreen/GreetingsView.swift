@@ -21,67 +21,71 @@ struct GreetingsView: View {
         static let quizButtonTitle = "TAKE A QUIZ"
     }
     
-    private let store: StoreOf<GreetingsScreenStore>
-    @ObservedObject private var viewStore: ViewStoreOf<GreetingsScreenStore>
-    
-    init(store: StoreOf<GreetingsScreenStore>) {
-        self.store = store
-        self.viewStore = ViewStore(store, observe: { $0 })
-    }
+    @Perception.Bindable var store: StoreOf<GreetingsScreenStore>
     
     var body: some View {
-        ZStack {
-            Image(.threeWoman)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
-            
-            GeometryReader { geo in
-                VStack {
-                    Spacer()
-                    Rectangle()
-                        .fill(Color.black)
-                        .frame(height: geo.size.height * Constants.overlayRactangleHeightMultiplier)
-                        .mask(
-                            LinearGradient(
-                                gradient: Constants.rectangleGradient,
-                                startPoint: .bottom,
-                                endPoint: .top))
+        WithPerceptionTracking {
+            NavigationStack(path: $store.scope(state: \.stack, action: \.stack)) {
+                ZStack {
+                    Image(.threeWoman)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .ignoresSafeArea()
+                    
+                    GeometryReader { geo in
+                        VStack {
+                            Spacer()
+                            Rectangle()
+                                .fill(Color.black)
+                                .frame(height: geo.size.height * Constants.overlayRactangleHeightMultiplier)
+                                .mask(
+                                    LinearGradient(
+                                        gradient: Constants.rectangleGradient,
+                                        startPoint: .bottom,
+                                        endPoint: .top))
+                        }
+                        .ignoresSafeArea()
+                    }
+                    
+                    VStack {
+                        Spacer()
+                        
+                        HStack {
+                            Text(Constants.greetingText)
+                                .foregroundStyle(.white)
+                                .font(.system(size: 32, weight: .medium, design: .default))
+                            Spacer()
+                        }
+                        .padding(.horizontal, 40)
+                        
+                        Spacer()
+                            .frame(height: 80)
+                        
+                        Button {
+                            store.send(.takeQuizTapped)
+                        } label: {
+                            Text(Constants.quizButtonTitle)
+                                .frame(width: 350, height: 48)
+                                .background(Color.white)
+                                .foregroundColor(.black)
+                        }
+                        .disabled(store.quiz == nil)
+                        .contentShape(Rectangle())
+                        
+                        Spacer()
+                            .frame(height: 62)
+                    }
+                    .ignoresSafeArea()
                 }
-                .ignoresSafeArea()
+            } destination: {
+                switch $0.case {
+                case .userInterestsScreen(let store):
+                    QuizInterestsView(store: store)
+                }
             }
-
-            VStack {
-                Spacer()
-                
-                HStack {
-                    Text(Constants.greetingText)
-                        .foregroundStyle(.white)
-                        .font(.system(size: 32, weight: .medium, design: .default))
-                    Spacer()
-                }
-                .padding(.horizontal, 40)
-                
-                Spacer()
-                    .frame(height: 80)
-                
-                Button(Constants.quizButtonTitle) {
-                    viewStore.send(.takeQuizTapped)
-                    print("something")
-                }
-                .disabled(viewStore.quiz == nil)
-                .foregroundStyle(.black)
-                .frame(width: 350, height: 48)
-                .background(Color.white)
-                
-                
-                Spacer()
-                    .frame(height: 62)
+            .onAppear {
+                store.send(.loadQuiz)
             }
-            .ignoresSafeArea()
-        }
-        .onAppear {
-            viewStore.send(.loadQuiz)
         }
     }
 }
