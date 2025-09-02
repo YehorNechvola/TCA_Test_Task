@@ -42,7 +42,7 @@ struct GreetingsScreenStore {
                 return .none
                 
             case .takeQuizTapped:
-                guard let question = state.qestions?.first else {
+                guard let question = getNeedsQuestion(for: .interests, state: state) else {
                     return .none
                 }
                 state.stack.append(.userInterestsScreen(InterestsQuizStore.State(question: question,
@@ -50,16 +50,14 @@ struct GreetingsScreenStore {
                 return .none
                 
             case .stack(.element(id: _, action: .userInterestsScreen(.continueQuiz))):
-                guard let questions = state.qestions else { return .none }
-                let q2 = questions[1]
-                state.stack.append(.userStylesScreen(InterestsQuizStore.State(question: q2,
+                guard let question = getNeedsQuestion(for: .styles, state: state) else { return .none }
+                state.stack.append(.userStylesScreen(InterestsQuizStore.State(question: question,
                                                                               seletedInterestsIds: state.savedAnswersIds)))
                 return .none
                 
             case .stack(.element(id: _, action: .userStylesScreen(.continueQuiz))):
-                guard let questions = state.qestions else { return .none }
-                let q2 = questions[2]
-                state.stack.append(.userColorsScreen(InterestsQuizStore.State(question: q2,
+                guard let question = getNeedsQuestion(for: .colors, state: state) else { return .none }
+                state.stack.append(.userColorsScreen(InterestsQuizStore.State(question: question,
                                                                               seletedInterestsIds: state.savedAnswersIds)))
                 return .none
         
@@ -72,6 +70,10 @@ struct GreetingsScreenStore {
             }
         }
         .forEach(\.stack, action: \.stack)
+    }
+    
+    private func getNeedsQuestion(for type: Question.QuestionType, state: State) -> Question? {
+        state.qestions?.first(where: { $0.type == type })
     }
 }
 
