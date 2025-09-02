@@ -114,40 +114,55 @@ private extension InterestsView {
     }
     
     @ViewBuilder
-    private func createCollectionCell(answer: Answer) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(answer.name)
-                .font(.system(size: 13, weight: .medium))
-                .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Spacer()
-            
-            ZStack {
-                Rectangle()
-                    .strokeBorder(Color.black, lineWidth: 1)
-                    .background(
-                        Rectangle()
-                            .fill(store.seletedInterestsIds.contains(answer.id) ? Color.black : Color.white)
-                    )
-                    .frame(width: 20, height: 20)
+    func createCollectionCell(answer: Answer) -> some View {
+        ZStack {
+            VStack {
+                Image(.boho)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
                 
-                if store.seletedInterestsIds.contains(answer.id) {
-                    Image(systemName: "checkmark")
-                        .foregroundColor(.white)
-                        .font(.system(size: 12, weight: .medium))
+                Text(answer.name.uppercased())
+                    .font(.system(size: 13, weight: .light))
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+            }
+            VStack(alignment: .trailing) {
+                HStack {
+                    Spacer()
+                    createCheckmarkButton(itemId: answer.id)
                 }
+                Spacer()
             }
         }
-        .padding()
-        .background(Color.white)
+        .padding(8)
         .overlay(Rectangle().stroke(Color.black, lineWidth: 1))
         .aspectRatio(1, contentMode: .fit)
-        .onTapGesture {
-            if store.seletedInterestsIds.contains(answer.id) {
-                store.send(.deselectInterest(answer.id))
-            } else {
-                store.send(.selectInterest(answer.id))
+    }
+    
+    @ViewBuilder
+    func createCheckmarkButton(itemId: String) -> some View {
+        ZStack {
+            Rectangle()
+                .strokeBorder(Color.black, lineWidth: 1)
+                .background(
+                    Rectangle()
+                        .fill(store.seletedInterestsIds.contains(itemId) ? Color.black : Color.white)
+                )
+                .frame(width: 20, height: 20)
+                .onTapGesture {
+                    if store.seletedInterestsIds.contains(itemId) {
+                        store.send(.deselectInterest(itemId))
+                    } else {
+                        store.send(.selectInterest(itemId))
+                    }
+                }
+            
+            if store.seletedInterestsIds.contains(itemId) {
+                Image(systemName: "checkmark")
+                    .foregroundColor(.white)
+                    .font(.system(size: 12, weight: .medium))
             }
         }
     }
 }
+
