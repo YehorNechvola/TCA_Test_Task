@@ -8,7 +8,8 @@
 import ComposableArchitecture
 
 private enum QuizServiceKey: DependencyKey {
-    static let liveValue: QuizServiceProtocol = MockQuizService()
+    static let liveValue: QuizServiceProtocol = RealQuizService()
+    static let mockValue: QuizServiceProtocol = MockQuizService()
 }
 
 extension DependencyValues {

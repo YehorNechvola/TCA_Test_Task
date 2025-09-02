@@ -7,22 +7,20 @@
 
 import Foundation
 
-struct Question: Equatable {
-    
-    enum QuestionType {
+struct Question: Equatable, Decodable {
+    enum QuestionType: String, Decodable {
         case interests
         case styles
         case colors
     }
-    
+
     let title: String
     let question: String
     let type: QuestionType
     let answers: [Answer]
 }
 
-struct Answer: Equatable {
-    
+struct Answer: Equatable, Decodable {
     let name: String
     let id: String
     let description: String?

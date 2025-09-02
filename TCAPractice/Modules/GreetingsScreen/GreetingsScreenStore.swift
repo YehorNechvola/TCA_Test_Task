@@ -26,7 +26,7 @@ struct GreetingsScreenStore {
         case stack(StackActionOf<Path>)
     }
     
-    @Dependency(\.quizService) var mockQuizService
+    @Dependency(\.quizService) var realQuizService
     @Dependency(\.userDefaultsManager) var userDefaultsManager
     
     var body: some ReducerOf<Self> {
@@ -34,7 +34,7 @@ struct GreetingsScreenStore {
             switch action {
             case .loadQuiz:
                 return .run { send in
-                    let quiz = await mockQuizService.getUserQuiz()
+                    let quiz = await realQuizService.getUserQuiz()
                     await send(.quizLoaded(quiz))
                 }
             case .quizLoaded(let qestions):
