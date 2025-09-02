@@ -117,9 +117,24 @@ private extension InterestsView {
     func createCollectionCell(answer: Answer) -> some View {
         ZStack {
             VStack {
-                Image(.boho)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                if let imageUrl = answer.imageUrl {
+                    let url = Bundle.main.url(forResource: imageUrl, withExtension: "png")
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        default:
+                            EmptyView()
+                        }
+                    }
+                } else {
+                    Rectangle()
+                        .fill(Color(hex: answer.colorHex ?? ""))
+                        .frame(width: 32, height: 32)
+                        
+                }
                 
                 Text(answer.name.uppercased())
                     .font(.system(size: 13, weight: .light))

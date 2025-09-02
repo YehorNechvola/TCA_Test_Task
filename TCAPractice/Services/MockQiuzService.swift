@@ -36,8 +36,8 @@ final class MockQuizService: QuizServiceProtocol {
         
         let userStylePreferences: [Answer] = [
             .init(name: "casual", id: "6", imageUrl: "casual"),
-            .init(name: "boho", id: "7", imageUrl: "boho"),
-            .init(name: "classy", id: "8", imageUrl: "classy"),
+            .init(name: "boho", id: "7", imageUrl: "ladylike"),
+            .init(name: "glassy", id: "8", imageUrl: "glassy"),
             .init(name: "ladylike", id: "9", imageUrl: "ladylike"),
             .init(name: "urban", id: "10", imageUrl: "urban"),
             .init(name: "sporty", id: "11", imageUrl: "sporty")
