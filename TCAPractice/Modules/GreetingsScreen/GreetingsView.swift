@@ -10,22 +10,15 @@ import ComposableArchitecture
 
 struct GreetingsView: View {
     
-    private enum Constants {
-        static let overlayRactangleHeightMultiplier: CGFloat = 0.7
-        static let rectangleGradient = Gradient(stops: [
-            .init(color: .black, location: 0.0),
-            .init(color: .black, location: 0.4),
-            .init(color: .clear, location: 1.0)
-        ])
-        static let greetingText = "Online Personal\nStyling.\nOutfits for\nEvery Woman."
-        static let quizButtonTitle = "TAKE A QUIZ"
-    }
-    
+    // MARK: - Store
     @Perception.Bindable var store: StoreOf<GreetingsScreenStore>
     
+    // MARK: - Body
     var body: some View {
         WithPerceptionTracking {
             NavigationStack(path: $store.scope(state: \.stack, action: \.stack)) {
+                
+                // MARK: - Background
                 ZStack {
                     Image(.threeWoman)
                         .resizable()
@@ -35,6 +28,8 @@ struct GreetingsView: View {
                     GeometryReader { geo in
                         VStack {
                             Spacer()
+                            
+                            // MARK: - Gradient Overlay
                             Rectangle()
                                 .fill(Color.black)
                                 .frame(height: geo.size.height * Constants.overlayRactangleHeightMultiplier)
@@ -42,30 +37,34 @@ struct GreetingsView: View {
                                     LinearGradient(
                                         gradient: Constants.rectangleGradient,
                                         startPoint: .bottom,
-                                        endPoint: .top))
+                                        endPoint: .top
+                                    )
+                                )
                         }
                         .ignoresSafeArea()
                     }
                     
+                    // MARK: - Foreground Content
                     VStack {
                         Spacer()
                         
                         HStack {
                             Text(Constants.greetingText)
                                 .foregroundStyle(.white)
-                                .font(.system(size: 32, weight: .medium, design: .default))
+                                .font(.system(size: Constants.greetingFontSize, weight: Constants.greetingFontWeight))
                             Spacer()
                         }
-                        .padding(.horizontal, 40)
+                        .padding(.horizontal, Constants.horizontalPadding)
                         
                         Spacer()
-                            .frame(height: 80)
+                            .frame(height: Constants.spacerHeightTop)
                         
+                        // MARK: - Quiz Button
                         Button {
                             store.send(.takeQuizTapped)
                         } label: {
                             Text(Constants.quizButtonTitle)
-                                .frame(width: 350, height: 48)
+                                .frame(width: Constants.quizButtonWidth, height: Constants.quizButtonHeight)
                                 .background(Color.white)
                                 .foregroundColor(.black)
                         }
@@ -73,11 +72,14 @@ struct GreetingsView: View {
                         .contentShape(Rectangle())
                         
                         Spacer()
-                            .frame(height: 62)
+                            .frame(height: Constants.spacerHeightBottom)
                     }
                     .ignoresSafeArea()
-                }                
-            } destination: {
+                }
+            }
+            
+            // MARK: - Navigation Destination
+            destination: {
                 switch $0.case {
                 case .userInterestsScreen(let store):
                     InterestsView(store: store)
@@ -86,6 +88,8 @@ struct GreetingsView: View {
                     InterestsView(store: store)
                 }
             }
+            
+            // MARK: - Lifecycle
             .onAppear {
                 store.send(.loadQuiz)
                 store.send(.getSavedUserAnswersIds)
