@@ -13,7 +13,7 @@ struct GreetingsScreenStore {
     
     @ObservableState
     struct State {
-        var qestions: [Question]?
+        var quiz: [Question]?
         var stack = StackState<Path.State>()
         var savedAnswersIds: Set<String> = []
     }
@@ -26,19 +26,19 @@ struct GreetingsScreenStore {
         case stack(StackActionOf<Path>)
     }
     
-    private let quizService: QuizServiceProtocol = MockQuizService()
-    private let userDefaultsManager = UserDefaultsManager.shared
+    @Dependency(\.quizService) var mockQuizService
+    @Dependency(\.userDefaultsManager) var userDefaultsManager
     
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .loadQuiz:
                 return .run { send in
-                    let quiz = await quizService.getUserQuiz()
+                    let quiz = await mockQuizService.getUserQuiz()
                     await send(.quizLoaded(quiz))
                 }
             case .quizLoaded(let qestions):
-                state.qestions = qestions
+                state.quiz = qestions
                 return .none
                 
             case .takeQuizTapped:
@@ -73,7 +73,7 @@ struct GreetingsScreenStore {
     }
     
     private func getNeedsQuestion(for type: Question.QuestionType, state: State) -> Question? {
-        state.qestions?.first(where: { $0.type == type })
+        state.quiz?.first(where: { $0.type == type })
     }
 }
 

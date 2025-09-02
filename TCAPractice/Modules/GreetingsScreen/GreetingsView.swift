@@ -69,7 +69,7 @@ struct GreetingsView: View {
                                 .background(Color.white)
                                 .foregroundColor(.black)
                         }
-                        .disabled(store.qestions?.isEmpty ?? true)
+                        .disabled(store.quiz?.isEmpty ?? true)
                         .contentShape(Rectangle())
                         
                         Spacer()

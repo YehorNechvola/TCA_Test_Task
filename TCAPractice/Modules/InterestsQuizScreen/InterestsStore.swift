@@ -22,16 +22,16 @@ struct InterestsQuizStore: Reducer {
         case continueQuiz
     }
     
-    private let userDefaultsManeger = UserDefaultsManager.shared
+    @Dependency(\.userDefaultsManager) var userDefaultsManager
     
     func reduce(into state: inout State, action: Action) -> Effect<Action> {
         switch action {
         case .selectInterest(let id):
-            userDefaultsManeger.addId(id)
+            userDefaultsManager.addId(id)
             state.seletedInterestsIds.insert(id)
             return .none
         case .deselectInterest(let id):
-            userDefaultsManeger.removeId(id)
+            userDefaultsManager.removeId(id)
             state.seletedInterestsIds.remove(id)
             return .none
         case .continueQuiz:
