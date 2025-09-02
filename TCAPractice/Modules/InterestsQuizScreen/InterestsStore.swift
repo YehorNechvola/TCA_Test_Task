@@ -29,12 +29,10 @@ struct InterestsQuizStore: Reducer {
         case .selectInterest(let id):
             userDefaultsManeger.addId(id)
             state.seletedInterestsIds.insert(id)
-            print(userDefaultsManeger.getIds().count)
             return .none
         case .deselectInterest(let id):
             userDefaultsManeger.removeId(id)
             state.seletedInterestsIds.remove(id)
-            print(userDefaultsManeger.getIds().count)
             return .none
         case .continueQuiz:
             return .none

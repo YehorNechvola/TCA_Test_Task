@@ -76,18 +76,22 @@ struct GreetingsView: View {
                             .frame(height: 62)
                     }
                     .ignoresSafeArea()
-                }
+                }                
             } destination: {
                 switch $0.case {
                 case .userInterestsScreen(let store):
                     InterestsView(store: store)
                         .navigationBarBackButtonHidden()
+                case .userStylesScreen(let store), .userColorsScreen(let store):
+                    InterestsView(store: store)
                 }
             }
             .onAppear {
                 store.send(.loadQuiz)
                 store.send(.getSavedUserAnswersIds)
             }
+            
+            .accentColor(.black)
         }
     }
 }

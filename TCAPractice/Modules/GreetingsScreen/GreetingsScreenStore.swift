@@ -49,11 +49,25 @@ struct GreetingsScreenStore {
                                                                                  seletedInterestsIds: state.savedAnswersIds)))
                 return .none
                 
-            case .stack:
+            case .stack(.element(id: _, action: .userInterestsScreen(.continueQuiz))):
+                guard let questions = state.qestions else { return .none }
+                let q2 = questions[1]
+                state.stack.append(.userStylesScreen(InterestsQuizStore.State(question: q2,
+                                                                              seletedInterestsIds: state.savedAnswersIds)))
                 return .none
                 
+            case .stack(.element(id: _, action: .userStylesScreen(.continueQuiz))):
+                guard let questions = state.qestions else { return .none }
+                let q2 = questions[2]
+                state.stack.append(.userColorsScreen(InterestsQuizStore.State(question: q2,
+                                                                              seletedInterestsIds: state.savedAnswersIds)))
+                return .none
+        
             case .getSavedUserAnswersIds:
                 state.savedAnswersIds = userDefaultsManager.getIds()
+                return .none
+                
+            default:
                 return .none
             }
         }
@@ -66,5 +80,7 @@ extension GreetingsScreenStore {
     @Reducer
     enum Path {
         case userInterestsScreen(InterestsQuizStore)
+        case userStylesScreen(InterestsQuizStore)
+        case userColorsScreen(InterestsQuizStore)
     }
 }

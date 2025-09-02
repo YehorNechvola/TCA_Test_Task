@@ -66,17 +66,15 @@ final class MockQuizService: QuizServiceProtocol {
                   question: "What’d you like our stylists to focus on?",
                   type: .interests,
                   answers: userInterestsAnswers),
-            .init(title: "Lifestyle & Interests",
+            .init(title: "Style preferences",
                   question: "What’d you like our stylists to focus on?",
                   type: .styles,
                   answers: userStylePreferences),
-            .init(title: "Style preferences",
+            .init(title: "Color preferences",
                   question: "Choose favourite colors",
                   type: .colors,
                   answers: userLolorPreferences)
         ]
-        
-        
         
         return questions
     }
