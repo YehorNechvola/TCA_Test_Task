@@ -45,20 +45,17 @@ struct GreetingsScreenStore {
                 guard let question = getNeedsQuestion(for: .interests, state: state) else {
                     return .none
                 }
-                state.stack.append(.userInterestsScreen(InterestsQuizStore.State(question: question,
-                                                                                 seletedInterestsIds: state.savedAnswersIds)))
+                state.stack.append(.userInterestsScreen(InterestsQuizStore.State(question: question)))
                 return .none
                 
             case .stack(.element(id: _, action: .userInterestsScreen(.continueQuiz))):
                 guard let question = getNeedsQuestion(for: .styles, state: state) else { return .none }
-                state.stack.append(.userStylesScreen(InterestsQuizStore.State(question: question,
-                                                                              seletedInterestsIds: state.savedAnswersIds)))
+                state.stack.append(.userStylesScreen(InterestsQuizStore.State(question: question)))
                 return .none
                 
             case .stack(.element(id: _, action: .userStylesScreen(.continueQuiz))):
                 guard let question = getNeedsQuestion(for: .colors, state: state) else { return .none }
-                state.stack.append(.userColorsScreen(InterestsQuizStore.State(question: question,
-                                                                              seletedInterestsIds: state.savedAnswersIds)))
+                state.stack.append(.userColorsScreen(InterestsQuizStore.State(question: question)))
                 return .none
         
             case .getSavedUserAnswersIds:

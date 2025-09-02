@@ -38,7 +38,17 @@ struct InterestsView: View {
                 
                 Spacer()
             }
-            .navigationBarTitle(store.question.title, displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(store.question.title)
+                        .font(.headline)
+                        .foregroundColor(.black)
+                }
+            }
+            .navigationBarTitle("", displayMode: .inline)
+            .onAppear {
+                store.send(.getSavedAnswersId)
+            }
     }
 }
 
