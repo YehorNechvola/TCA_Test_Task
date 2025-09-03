@@ -34,7 +34,7 @@ struct GreetingsScreenStore {
     }
     
     // MARK: - Dependencies
-    @Dependency(\.quizService) var realQuizService
+    @Dependency(\.quizService) var quizService
     @Dependency(\.userDefaultsManager) var userDefaultsManager
     
     // MARK: - Reducer
@@ -45,7 +45,7 @@ struct GreetingsScreenStore {
             case .loadQuiz:
                 // MARK: Load quiz asynchronously
                 return .run { send in
-                    let quiz = await realQuizService.getUserQuiz()
+                    let quiz = await quizService.getUserQuiz()
                     await send(.quizLoaded(quiz))
                 }
                 
